@@ -1,0 +1,22 @@
+YAML_VERSION=yaml-cpp-0.5.3
+YAML_TOP=$(PACKAGE_SITE_TOP)/yaml-cpp/$(YAML_VERSION)
+
+BUILDROOT_VERSION=buildroot-2016.11.1-
+
+YAML_TOP_ARCH_default=$(YAML_TOP)/$(patsubst linuxRT-%,$(BUILDROOT_VERSION)%,$(T_A))
+
+YAML_TOP_ARCH_linuxRT-arm_zynq=$(YAML_TOP)/$(BUILDROOT_VERSION)zynq
+
+YAML_TOP_ARCH=$(or $(YAML_TOP_ARCH_$(T_A)),$(YAML_TOP_ARCH_default))
+
+YAML_INCLUDES_default=$(YAML_TOP_ARCH)/include
+
+yaml-cpp_DIR_default=$(YAML_TOP_ARCH)/lib
+
+YAML_INCLUDES:=$(wildcard $(or $(YAML_INCLUDES_$(T_A)),$(YAML_INCLUDES_default)))
+
+yaml-cpp_DIR:=$(wildcard $(or $(YAML_LIBS_$(T_A)),$(yaml-cpp_DIR_default)))
+
+YAML_LIBS+=yaml-cpp
+
+INCLUDES+=$(addprefix -I,$(YAML_INCLUDES))
